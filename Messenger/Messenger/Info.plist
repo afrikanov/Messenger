@@ -20,7 +20,7 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UIApplicationSceneManifest</key>
+	<key></key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
