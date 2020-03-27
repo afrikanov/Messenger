@@ -7,7 +7,7 @@
 //
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var profileImage: UIImageView!
@@ -21,6 +21,41 @@ class ViewController: UIViewController {
     
     @IBAction func imageSelectButtonClick(_ sender: Any) {
         print("Выбери изображение профиля")
+        
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        
+        let actionSheet = UIAlertController(title: "Изображение", message: "Выберите изображение профиля", preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "Сделать фото", style: .default, handler: { (_) in
+            if (UIImagePickerController.isSourceTypeAvailable(.camera)) {
+                imagePickerController.sourceType = .camera
+                self.present(imagePickerController, animated: true, completion: nil)
+            } else {
+                print("Sorry, camera is not available")
+            }
+        }))
+
+        actionSheet.addAction(UIAlertAction(title: "Галерея", style: .default, handler: { (_) in
+            imagePickerController.sourceType = .photoLibrary
+            self.present(imagePickerController, animated: true, completion: nil)
+        }))
+
+        actionSheet.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: { (_) in
+            print("Отмена")
+        }))
+
+        self.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        profileImage.image = image
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
     
     var tap: UITapGestureRecognizer?
